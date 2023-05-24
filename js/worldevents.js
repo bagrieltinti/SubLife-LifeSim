@@ -1,0 +1,76 @@
+// Definição dos eventos de mundo
+const worldEvents = [
+  'Um youtuber viraliza fazendo vídeo de opinião sobre outro youtuber, putz.',
+  'Influenciador é cancelado no twitter.',
+  'Criador de conteúdo viraliza ao usar maquiagem feita por outra influenciadora: "Acho que isso não ficou certo".',
+  'Música top 1 das rádios faz referência a bandas clássicas de rock. 🚶‍♂️🚶🚶🏻‍♀️🚶🏽',
+  'Lançou um novo filme dos Vingadores.',
+  'Lançou um novo filme do Super Mario.',
+  'Lançou um novo filme da Barbie.',
+  'Novo Velozes e Furiosos, não sei qual é, até eles já cansaram de contar.',
+  'Danilo Gentili abre novo clube de comédia na cidade.',
+  'Os Barbixas estão se apresentando na cidade!',
+  'Flow Podcast abre mais uma filial.',
+  'Podpah abre novo programa.',
+  'Rodrigo Faro abre programa de culinária.',
+  'Galvão Bueno apresenta programa a tarde na Band.',
+  'Faustão apresenta programa a tarde na SBT.',
+  'Serginho Groisman deixa a Globo e abre seu programa no YouTube.',
+  'Paul McCartney faz uma temporada de shows pelo Brasil.',
+  'Anitta compra casa no exterior.',
+  'Xurrasco abandona TikTok: "Só volto quando aparecer hit novo".',
+  'Alanzoka aponsenta canal na Twitch, diz que vai postar vídeos de vez em quando: "Estou velho".',
+  'Davy Jones oficialmente zera todos os Resident Evil em live: "Vagabundo é foda".',
+  'Rockstar adia mais uma vez GTA 6.',
+  'Nova onda de hate contra o YouTube após mudança repentina no algoritmo.',
+  'Orochinho responde processo em prisão domiciliar: "Eu já falei que amo k-pop, só parem por favor".',
+  '"Com certeza caberiam duas pessoas naquela porta", comenta DiCaprio.',
+  '"Já usaram meu código do Kwai?"',
+  'Defante faz novo vídeo com os atrasados do Enem.',
+  'Raul Gil vai para a Globo.',
+  'Fábio Porchat é cancelado mais uma vez.',
+  'Igor 3k abre novo podcast com Monark.',
+  'Igão Underground abre novo podcast com Júlio Cocielo.',
+  'Convidado chama a polícia para Rogério Vilela: "Eu estou em um cativeiro, pare de falar, eu não aguento mais!!!".',
+  'Rumores sobre filme de FNAF.',
+  'Maísa assume como apresentadora o programa Casos de Família.',
+  'Leo Lins é transferido de presídio.',
+  'Vai Dar Namoro é agora apresentado por Fausto Silva.',
+  'Desenvolvedor indie pede a colaboração de todos: "O jogo não tem nada ainda, eu sei".',
+  'Michael Jackson é encontrado vivo, em Paris. "He-heee!."',
+  'Banda O Grilo grava novo álbum em Londres.',
+  'Rafinha Bastos se reconcilia com Danilo Gentili: "Como um irmão pra mim".',
+  'Os Rolling Stones fazem uma temporada de shows no Brasil.',
+  'Vídeos feitos por IA se tornam ainda mais populares.',
+  'Gato Galactico volta com o Cueio!.',
+  'Casimiro bate recorde de views na Twitch!',
+  'Equipe de produções da Marvel vem para o Brasil para novo filme!.',
+  'Maurício Meireles é cancelado pela geração Z: "Eu sei lá que palavra é essa que você tá falando".',
+  'Nova temporada de Stranger Things é lançada na Netflix.',
+  'Um novo parque temático de Harry Potter é inaugurado nos Estados Unidos.',
+  'Um escândalo envolvendo doping abala o mundo do esporte.',
+  'Uma nova rede social surge e se torna uma sensação entre os jovens.',
+  'Uma empresa de exploração espacial envia com sucesso uma missão tripulada a Marte.',
+  'Empresa espacial realiza o primeiro voo comercial para a Lua.',
+  'Atores de Game of Thrones lançam uma série de comédia juntos.',
+  'Adam Sandler anuncia sua aposentadoria após uma carreira brilhante.',
+  'Cidade implementa um sistema de transporte público totalmente sustentável.',
+  'Empresa de tecnologia anuncia o lançamento de um smartphone dobrável.',
+  'Um aplicativo de realidade aumentada se torna uma febre entre os jovens.',
+  'Uma nova lei de direitos humanos é implementada no país.',
+  'Wagner Moura é indicado ao Oscar de Melhor Ator.',
+  'Xuxa Meneghel retorna à televisão com um programa de grande audiência.',
+  'Clarice Lispector ganha uma adaptação cinematográfica de uma de suas obras mais famosas.',
+  'Marcelo Adnet estrela um programa de TV nos Estados Unidos.',
+];
+
+// Função para obter um evento de mundo aleatório
+function getRandomWorldEvent() {
+  const randomIndex = Math.floor(Math.random() * worldEvents.length);
+  return worldEvents[randomIndex];
+}
+
+// Atribuição direta no objeto global (window)
+window.worldEventsModule = {
+  getRandomWorldEvent
+};
