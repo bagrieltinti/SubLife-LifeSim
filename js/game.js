@@ -129,6 +129,8 @@ class Game {
       this.openActivitiesMenu.bind(this),
     );
     this.container = document.getElementById("container");
+    this.jobBtn = document.getElementById("jobBtn");
+    this.jobBtn.addEventListener("click", this.openJobMenu.bind(this));
     this.universityBtn = document.getElementById("universityBtn");
     this.universityBtn.addEventListener(
       "click",
@@ -151,7 +153,34 @@ class Game {
       dinheiro: getRandomNumber(0, 60),
       felicidade: getRandomNumber(1, 100),
       aparencia: getRandomNumber(1, 100),
+      job: null,
     };
+
+    this.jobs = [
+      { name: "🛒 Atendente de Loja", salary: 15, requirement: 10, happiness: -1 },
+      { name: "🧑‍💻 Desenvolvedor Júnior", salary: 35, requirement: 45, happiness: 4 },
+      {
+        name: "🩺 Residente de Medicina",
+        salary: 55,
+        requirement: 60,
+        happiness: 2,
+        requiresCourse: "🩺 Medicina",
+      },
+      {
+        name: "📊 Analista Financeiro",
+        salary: 45,
+        requirement: 50,
+        happiness: 1,
+        requiresCourse: "➗ Matemática",
+      },
+      {
+        name: "✍️ Professor de Idiomas",
+        salary: 30,
+        requirement: 35,
+        happiness: 3,
+        requiresCourse: "✍️ Inglês",
+      },
+    ];
 
     this.nameElement = document.getElementById("name");
     this.ageElement = document.getElementById("age");
@@ -266,6 +295,10 @@ class Game {
     university.textContent = "🎓 Faculdade: " + this.getUniversityStatus();
     menu.appendChild(university);
 
+    const job = document.createElement("p");
+    job.textContent = "💼 Emprego: " + this.getJobStatus();
+    menu.appendChild(job);
+
     const closeButton = document.createElement("button");
     closeButton.textContent = "❌";
     closeButton.addEventListener("click", this.closeCharacterInfo.bind(this));
@@ -284,6 +317,14 @@ class Game {
     } else {
       return this.personagem.course.name;
     }
+  }
+
+  getJobStatus() {
+    if (!this.personagem.job) {
+      return "Desempregado";
+    }
+
+    return `${this.personagem.job.name} (💰 +${this.personagem.job.salary}/ano)`;
   }
 
   closeCharacterInfo() {
@@ -407,6 +448,113 @@ class Game {
     overlay.remove();
   }
 
+  openJobMenu() {
+    this.generalButtons.currentTime = 0;
+    this.generalButtons.play();
+
+    if (this.personagem.idade < 18) {
+      this.updateText("Você ainda não pode trabalhar.");
+      return;
+    }
+
+    if (!this.personagem.job) {
+      this.updateText("💼 Você pode escolher um emprego para ganhar dinheiro todos os anos.");
+    }
+
+    const overlay = document.createElement("div");
+    overlay.id = "overlay";
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    overlay.style.display = "flex";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+
+    const menu = document.createElement("div");
+    menu.style.backgroundColor = "#fff";
+    menu.style.padding = "20px";
+    menu.style.borderRadius = "5px";
+    menu.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
+    menu.style.textAlign = "center";
+    menu.style.maxWidth = "420px";
+
+    const title = document.createElement("h2");
+    title.textContent = "💼 Empregos";
+    menu.appendChild(title);
+
+    if (this.personagem.job) {
+      const currentJob = document.createElement("p");
+      currentJob.textContent = `Emprego atual: ${this.personagem.job.name} (💰 +${this.personagem.job.salary}/ano)`;
+      menu.appendChild(currentJob);
+
+      const resignBtn = document.createElement("button");
+      resignBtn.textContent = "🚪 Pedir demissão";
+      resignBtn.style.margin = "5px";
+      resignBtn.addEventListener("click", () => {
+        this.resignJob();
+        this.closeJobMenu();
+      });
+      menu.appendChild(resignBtn);
+    }
+
+    this.jobs.forEach((job) => {
+      const button = document.createElement("button");
+      button.textContent = `${job.name} (req. ${job.requirement}🧠)`;
+      button.style.margin = "5px";
+      button.title = `Salário anual: +${job.salary} | Felicidade: ${job.happiness >= 0 ? "+" : ""}${job.happiness}`;
+      button.addEventListener("click", () => this.applyForJob(job));
+      menu.appendChild(button);
+    });
+
+    const closeButton = document.createElement("button");
+    closeButton.textContent = "❌";
+    closeButton.style.margin = "5px";
+    closeButton.addEventListener("click", this.closeJobMenu.bind(this));
+    menu.appendChild(closeButton);
+
+    overlay.appendChild(menu);
+    document.body.appendChild(overlay);
+    this.container.appendChild(overlay);
+  }
+
+  closeJobMenu() {
+    const overlay = document.getElementById("overlay");
+    if (overlay) {
+      overlay.remove();
+    }
+  }
+
+  applyForJob(job) {
+    if (this.personagem.intelecto < job.requirement) {
+      this.updateText("Você não tem os requisitos intelectuais para este emprego.");
+      return;
+    }
+
+    if (
+      job.requiresCourse &&
+      (!this.personagem.course ||
+        this.personagem.course.name !== job.requiresCourse ||
+        !this.personagem.course.completed)
+    ) {
+      this.updateText(`Você precisa se formar em ${job.requiresCourse} para esse emprego.`);
+      return;
+    }
+
+    this.personagem.job = { ...job };
+    this.updateText(`💼 Você começou a trabalhar como ${job.name}.`);
+    this.closeJobMenu();
+  }
+
+  resignJob() {
+    if (this.personagem.job) {
+      this.updateText(`Você pediu demissão de ${this.personagem.job.name}.`);
+    }
+    this.personagem.job = null;
+  }
+
   startCourse(course) {
     if (this.personagem.intelecto < course.requirement) {
       this.updateText("Você não tem os requisitos, tente novamente em breve.");
@@ -431,6 +579,7 @@ class Game {
       this.nextYearBtn.style.display = "none";
       this.actionBtn.style.display = "none";
       this.universityBtn.style.display = "none";
+      this.jobBtn.style.display = "none";
 
     } else if (this.personagem.idade >= 88 && this.personagem.idade < 96) {
       const chanceOfDeath = Math.random();
@@ -439,6 +588,7 @@ class Game {
         this.nextYearBtn.style.display = "none";
         this.actionBtn.style.display = "none";
         this.universityBtn.style.display = "none";
+        this.jobBtn.style.display = "none";
         this.showDeathScreen();
       }
     } else if (this.personagem.idade >= 96) {
@@ -449,6 +599,7 @@ class Game {
         this.nextYearBtn.style.display = "none";
         this.actionBtn.style.display = "none";
         this.universityBtn.style.display = "none";
+        this.jobBtn.style.display = "none";
 
       }
     }
@@ -482,6 +633,14 @@ class Game {
       });
     }
 
+    if (this.personagem.idade >= 10) {
+      activities.push({
+        name: "🧘 Meditar",
+        effect: { happiness: 4, health: 2 },
+        message: "🧘 Você meditou e se sente mais calmo",
+      });
+    }
+
     if (this.personagem.idade >= 18) {
       activities.push({
         name: "💊 Ir ao médico (-50 dinheiro)",
@@ -504,6 +663,19 @@ class Game {
         effect: { money: 6 },
         message: "👨‍💼 Você fez alguns serviços para amigos e conhecidos",
       });
+    }
+
+    if (this.personagem.idade >= 13) {
+      activities.push({
+        name: "🎸 Ensaiar com um instrumento (-15 dinheiro)",
+        effect: { money: -15, happiness: 6, intellect: 2 },
+        message: "🎸 Você praticou um instrumento musical",
+      });
+    }
+
+    if (activities.length === 0) {
+      this.updateText("Ainda não há ações disponíveis para a sua idade.");
+      return;
     }
 
   const overlay = document.createElement("div");
@@ -574,6 +746,14 @@ class Game {
     if (activity.effect.money) {
       this.personagem.dinheiro += activity.effect.money;
       this.moneyElement.classList.add("changed"); // Add the "changed" class
+    }
+    if (activity.effect.happiness) {
+      this.personagem.felicidade += activity.effect.happiness;
+      this.happinessElement.classList.add("changed");
+    }
+    if (activity.effect.appearance) {
+      this.personagem.aparencia += activity.effect.appearance;
+      this.appearanceElement.classList.add("changed");
     }
 
     // Atualiza as informações do personagem na parte de cima da tela novamente
@@ -663,6 +843,7 @@ class Game {
 
     if (this.personagem.idade === 18) {
       this.universityBtn.style.display = "inline-block"; // Display the "University" button
+      this.jobBtn.style.display = "inline-block";
     }
 
     if (this.personagem.course) {
@@ -675,6 +856,16 @@ class Game {
         this.completeCourse();
         this.personagem.intelecto += 20;
       }
+    }
+
+    if (this.personagem.job) {
+      this.personagem.dinheiro += this.personagem.job.salary;
+      if (this.personagem.job.happiness) {
+        this.personagem.felicidade += this.personagem.job.happiness;
+      }
+      this.updateText(
+        `💼 Seu trabalho como ${this.personagem.job.name} rendeu ${this.personagem.job.salary} de dinheiro este ano.`
+      );
     }
 
     // Atualiza as informações do personagem na parte de cima da tela

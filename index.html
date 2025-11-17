@@ -1,70 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <audio id="yearButtonSound">
-        <source src="audio/yearbutton.wav" type="audio/wav">
-      </audio>      
+  <audio id="yearButtonSound">
+    <source src="audio/yearbutton.wav" type="audio/wav">
+  </audio>
 
-      <audio id="generalButtons">
-        <source src="audio/button.wav" type="audio/wav">
-      </audio>  
+  <audio id="generalButtons">
+    <source src="audio/button.wav" type="audio/wav">
+  </audio>
 
-      <audio id="faculNotify">
-        <source src="audio/faculNotify.wav" type="audio/wav">
-      </audio>  
+  <audio id="faculNotify">
+    <source src="audio/faculNotify.wav" type="audio/wav">
+  </audio>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SubLife</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SubLife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<audio id="intro-sound" src="audio/introNotify.wav"></audio>
-<div id="intro-screen">
+  <audio id="intro-sound" src="audio/introNotify.wav"></audio>
+  <div id="intro-screen">
     <img src="img/gameicon.png" alt="Intro Image">
-</div>
-<script>
+  </div>
+  <script>
     function removeIntroScreen() {
       var introScreen = document.getElementById('intro-screen');
       introScreen.parentNode.removeChild(introScreen);
     }
 
-    setTimeout(removeIntroScreen, 4500); // Adjust the timeout duration to match your fade-out animation duration plus any additional delay
+    setTimeout(removeIntroScreen, 4500);
   </script>
-<div id="container">
-    <div id="game-screen">
-        <div id="header">
-            <h1 id="name"></h1>
-            <h2 id="age"></h2>
-            <div id="textbox"></div>
-            <div id="controls">
-                <div id="buttons">
-                    <button id="infoBtn">🚶</button>
-                    <button id="actionBtn">🚀</button>
-                    <button id="universityBtn" style="display: none;">🎓</button>
-                    <button id="resetBtn">💀</button>
-                </div>
+  <div id="container">
+    <div id="game-screen" class="app-shell">
+      <section class="panel info-panel">
+        <div class="card hero-card glass">
+          <div class="identity">
+            <div class="avatar-ring">🎲</div>
+            <div class="identity-text">
+              <p class="eyebrow">Seu personagem</p>
+              <h1 id="name"></h1>
+              <p id="age" class="age-pill"></p>
             </div>
+          </div>
+          <div class="toolbar" id="buttons">
+            <button id="infoBtn" title="Informações">🚶</button>
+            <button id="actionBtn" title="Ações">🚀</button>
+            <button id="jobBtn" title="Empregos" style="display: none;">💼</button>
+            <button id="universityBtn" title="Faculdade" style="display: none;">🎓</button>
+            <button id="resetBtn" title="Nova vida">💀</button>
+          </div>
+          <p class="card-hint">Gerencie cada aspecto da sua vida com os atalhos acima.</p>
         </div>
-        <div id="stats">
-            <p id="money">💰 Dinheiro: </p>
-            <p id="health">❤️ Saúde: </p>
-            <progress id="health-bar" max="100" value="0"></progress>
-            <p id="intellect">🧠 Intelecto: </p>
-            <progress id="intellect-bar" max="100" value="0"></progress>
-            <p id="happiness">😄 Felicidade: </p>
-            <progress id="happiness-bar" max="100" value="0"></progress>
-            <p id="appearance">👗 Aparência: </p>
-            <progress id="appearance-bar" max="100" value="0"></progress>
-        </div>
-        <div id="controls">
-            <div id="buttonBot">
-                <button id="nextYearBtn">⏭️ Próximo Ano</button>
+
+        <div class="card stats-card glass">
+          <div class="stats-header">
+            <p class="eyebrow">Indicadores</p>
+            <h2>Estado Atual</h2>
+          </div>
+          <div id="stats" class="stats-grid">
+            <div class="stat">
+              <p id="money" class="stat-label">💰 Dinheiro: </p>
             </div>
+            <div class="stat">
+              <p id="health" class="stat-label">❤️ Saúde: </p>
+              <progress id="health-bar" max="100" value="0"></progress>
+            </div>
+            <div class="stat">
+              <p id="intellect" class="stat-label">🧠 Intelecto: </p>
+              <progress id="intellect-bar" max="100" value="0"></progress>
+            </div>
+            <div class="stat">
+              <p id="happiness" class="stat-label">😄 Felicidade: </p>
+              <progress id="happiness-bar" max="100" value="0"></progress>
+            </div>
+            <div class="stat">
+              <p id="appearance" class="stat-label">👗 Aparência: </p>
+              <progress id="appearance-bar" max="100" value="0"></progress>
+            </div>
+          </div>
         </div>
+
+        <div class="card action-card glass">
+          <div class="action-content">
+            <div>
+              <p class="eyebrow">Linha do tempo</p>
+              <h3>Faça o ano avançar</h3>
+            </div>
+            <button id="nextYearBtn">⏭️ Próximo Ano</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel log-panel">
+        <div class="card log-card glass">
+          <div class="log-header">
+            <div>
+              <p class="eyebrow">Eventos recentes</p>
+              <h2>Diário de Vida</h2>
+            </div>
+          </div>
+          <div id="textbox" class="log-feed"></div>
+        </div>
+      </section>
     </div>
-</div>
+  </div>
 <script src="js/game.js"></script>
 <script src="js/worldevents.js"></script>
 <script src="js/personalevents.js"></script>
